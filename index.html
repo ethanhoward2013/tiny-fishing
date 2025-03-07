@@ -1,9 +1,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Tiny Fishing Modded</title>
+    <title>Tiny Fishing Game</title>
     <style>
-        /* Mod menu styling */
+        /* Simple style for mod menu */
         #modMenu {
             position: fixed;
             top: 10px;
@@ -31,6 +31,11 @@
 </head>
 <body>
 
+    <!-- Game canvas -->
+    <div id="gameContainer">
+        <canvas id="canvas" width="640" height="360"></canvas>
+    </div>
+
     <div id="modMenu">
         <h3>Mod Menu</h3>
         <button id="infiniteMoney">Infinite Money</button>
@@ -39,10 +44,13 @@
         <button id="disableMods">Disable Mods</button>
     </div>
 
-    <canvas id="canvas" width="640" height="360"></canvas>
-
     <script>
-        // Mockup for the game variables
+        // Placeholder for game initialization (e.g., Unity, WebGL, etc.)
+        function startGame() {
+            console.log("Game is initialized successfully.");
+        }
+
+        // Mockup for the game variables (you can replace these with the real game variables)
         let playerMoney = 100;
         let playerCoins = 50;
         let fishCaught = 0;
@@ -87,7 +95,14 @@
             alert("Mods Disabled!");
             updateUI();
         });
+
+        // Initialize the game
+        window.onload = function () {
+            startGame(); // Ensure game initialization happens before the mods
+        };
     </script>
 
+    <!-- Add any required game-specific libraries or scripts here -->
+    <!-- Example: <script src="gameLoader.js"></script> -->
 </body>
 </html>
