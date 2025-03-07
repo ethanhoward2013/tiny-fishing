@@ -1,156 +1,93 @@
 <html lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="pragma" content="no-cache">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta charset="utf-8">
-    <title>Tiny Fishing</title>
-    <meta name="description" content="Tiny Fishing is a fishing game where you have to upgrade your gear to get bigger fish.">
-    <meta name="robots" content="noindex,nofollow" />
-    <script type="text/javascript" src="/js/main.js"></script>
+    <title>Tiny Fishing Modded</title>
     <style>
-        body {
-            background: #000;
-            color: #cccccc;
-            margin: 0px;
-            padding: 0px;
-            border: 0px;
-        }
-        canvas {
-            image-rendering: optimizeSpeed;
-            -webkit-interpolation-mode: nearest-neighbor;
-            -ms-touch-action: none;
-            margin: 0px;
-            padding: 0px;
-            border: 0px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
+        /* Styling for the mod menu */
         #modMenu {
-            position: absolute;
+            position: fixed;
             top: 10px;
             right: 10px;
             background: rgba(0, 0, 0, 0.8);
             color: white;
             padding: 10px;
             border-radius: 5px;
-            z-index: 999;
-            font-family: Arial, sans-serif;
-            display: block;
-            cursor: move;
+            z-index: 1000;
         }
+
         #modMenu button {
             background: #444;
             color: white;
+            border: 1px solid #555;
             padding: 10px;
-            border: none;
-            cursor: pointer;
-            margin-bottom: 5px;
-            border-radius: 5px;
-        }
-        #modMenu button:hover {
-            background: #666;
+            margin: 5px 0;
+            width: 100%;
         }
     </style>
-    <script>
-        // Make the mod menu draggable
-        function makeDraggable(element) {
-            var offsetX, offsetY;
+</head>
+<body>
+    <div id="modMenu">
+        <h3>Mod Menu</h3>
+        <button id="infiniteMoney">Infinite Money</button>
+        <button id="infiniteCoins">Infinite Coins</button>
+        <button id="autoCollectFish">Auto Collect Fish</button>
+        <button id="disableMods">Disable Mods</button>
+    </div>
 
-            element.onmousedown = function (e) {
-                e.preventDefault();
-                offsetX = e.clientX - element.getBoundingClientRect().left;
-                offsetY = e.clientY - element.getBoundingClientRect().top;
+    <canvas id="canvas" width="640" height="360"></canvas>
 
-                document.onmousemove = function (e) {
-                    element.style.left = e.clientX - offsetX + 'px';
-                    element.style.top = e.clientY - offsetY + 'px';
-                };
+    <script type="text/javascript">
+        // This is a simple mockup of how Tiny Fishing modding could work.
+        // You will need to adapt these based on the actual game variables and functions
 
-                document.onmouseup = function () {
-                    document.onmousemove = null;
-                    document.onmouseup = null;
-                };
-            };
+        // Mockup for the game's global player variables
+        let playerMoney = 100;
+        let playerCoins = 50;
+        let fishCaught = 0;
+
+        // Function to simulate collecting a fish
+        function autoCollectFish() {
+            // Simulate the player catching a fish
+            fishCaught++;
+            console.log("Fish caught: " + fishCaught);
+            // For the purposes of this, we'll increment coins and money as well
+            playerMoney += 10;
+            playerCoins += 5;
+            updateUI();
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Create mod menu
-            let modMenu = document.createElement("div");
-            modMenu.id = "modMenu";
-            modMenu.innerHTML = `
-                <h3 style="margin: 0 0 10px; text-align: center;">Mod Menu</h3>
-                <button id="infiniteMoney">Infinite Money</button>
-                <button id="infiniteCoins">Infinite Coins</button>
-                <button id="disableMods">Disable Mods</button>
-            `;
-            document.body.appendChild(modMenu);
+        // Function to update UI values based on mods
+        function updateUI() {
+            console.log(`Money: ${playerMoney}, Coins: ${playerCoins}, Fish Caught: ${fishCaught}`);
+        }
 
-            // Make mod menu draggable
-            makeDraggable(modMenu);
+        // Mod menu functionality
+        document.getElementById('infiniteMoney').addEventListener('click', () => {
+            playerMoney = 9999999; // Set infinite money
+            alert("Infinite Money Activated!");
+            updateUI();
+        });
 
-            // Simulate collecting fish (force the game to increment money/coins rapidly)
-            let simulateFishCollection = function() {
-                if (window.hasOwnProperty('catchFish') && typeof window.catchFish === "function") {
-                    for (let i = 0; i < 1000; i++) {
-                        window.catchFish(); // Simulate catching fish
-                    }
-                } else {
-                    console.log("Catch fish function not found.");
-                }
-            };
+        document.getElementById('infiniteCoins').addEventListener('click', () => {
+            playerCoins = 9999999; // Set infinite coins
+            alert("Infinite Coins Activated!");
+            updateUI();
+        });
 
-            // Force a collection of fish after the game has initialized
-            setTimeout(function() {
-                simulateFishCollection(); // Call the function to simulate collecting fish
-            }, 2000); // Start after a short delay to ensure the game is loaded
+        document.getElementById('autoCollectFish').addEventListener('click', () => {
+            // Start auto-collecting fish every 100ms
+            setInterval(autoCollectFish, 100);
+            alert("Auto Collect Fish Activated!");
+        });
 
-            // Monitor money and coins updates
-            setInterval(function() {
-                if (window.hasOwnProperty('playerMoney') && window.hasOwnProperty('playerCoins')) {
-                    console.log("Money: " + window.playerMoney);
-                    console.log("Coins: " + window.playerCoins);
-
-                    // Hook into the game's variables and enable the mod buttons
-                    document.getElementById("infiniteMoney").addEventListener("click", function () {
-                        window.playerMoney = 9999999;  // Override playerMoney
-                        alert("Infinite Money Enabled!");
-                    });
-
-                    document.getElementById("infiniteCoins").addEventListener("click", function () {
-                        window.playerCoins = 9999999;  // Override playerCoins
-                        alert("Infinite Coins Enabled!");
-                    });
-
-                    document.getElementById("disableMods").addEventListener("click", function () {
-                        window.playerMoney = 100;  // Reset money
-                        window.playerCoins = 10;  // Reset coins
-                        alert("Mods Disabled!");
-                    });
-                } else {
-                    console.log("Unable to find money or coins variable.");
-                }
-            }, 1000); // Check every second if money/coins are found
-
-            // Run the game script
-            let script = document.createElement("script");
-            script.src = "html5game/TinyFishing.js";
-            script.onload = function() {
-                GameMaker_Init();
-            };
-            document.body.appendChild(script);
+        document.getElementById('disableMods').addEventListener('click', () => {
+            // Disable all mods and reset the values
+            playerMoney = 100;
+            playerCoins = 50;
+            fishCaught = 0;
+            alert("Mods Disabled!");
+            updateUI();
         });
     </script>
-</head>
-<body style="overflow: hidden;">
-    <div class="gm4html5_div_class" id="gm4html5_div_id" style="padding-top: 20px; position: absolute; height: 488px;">
-        <canvas id="canvas" width="640" height="360">
-            <p>Your browser doesn't support HTML5 canvas.</p>
-        </canvas>
-    </div>
 </body>
 </html>
