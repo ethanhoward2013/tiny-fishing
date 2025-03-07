@@ -93,22 +93,25 @@
             // Make mod menu draggable
             makeDraggable(modMenu);
 
-            // Simulate catching a fish to discover the variables
-            let interval = setInterval(function() {
+            // Simulate catching multiple fish in rapid succession
+            let catchFishInterval = setInterval(function() {
                 if (window.hasOwnProperty('catchFish') && typeof window.catchFish === "function") {
-                    clearInterval(interval);
+                    // Call the catchFish function rapidly
+                    for (let i = 0; i < 1000; i++) {
+                        window.catchFish(); // Simulate catching a fish
+                    }
 
-                    // Simulate catching a fish
-                    window.catchFish();
+                    // Stop the interval after the catchFish calls
+                    clearInterval(catchFishInterval);
 
-                    // Wait for the game to update the money and coins, then inspect
+                    // Wait a short period to ensure the game updates the money and coins
                     setTimeout(function() {
-                        // Try to inspect the game variables for money and coins
+                        // Check if the game's money and coins have been updated
                         if (window.hasOwnProperty('playerMoney') && window.hasOwnProperty('playerCoins')) {
                             console.log("Money: " + window.playerMoney);
                             console.log("Coins: " + window.playerCoins);
 
-                            // Hook into the game's variables
+                            // Hook into the game's variables and enable the mod buttons
                             document.getElementById("infiniteMoney").addEventListener("click", function () {
                                 window.playerMoney = 9999999;  // Override playerMoney
                                 alert("Infinite Money Enabled!");
@@ -127,9 +130,9 @@
                         } else {
                             alert("Failed to find the money or coins variables.");
                         }
-                    }, 1000); // Delay to allow the game to update after catching a fish
+                    }, 1000); // Wait for the game to update its variables
                 }
-            }, 1000);
+            }, 1000); // Check every second if the catchFish function is available
 
             // Run the game script
             let script = document.createElement("script");
