@@ -18,7 +18,6 @@
             padding: 0px;
             border: 0px;
         }
-
         canvas {
             image-rendering: optimizeSpeed;
             -webkit-interpolation-mode: nearest-neighbor;
@@ -29,9 +28,8 @@
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1;  /* Ensures canvas is above other elements */
+            z-index: 1;
         }
-
         #modMenu {
             position: absolute;
             top: 10px;
@@ -40,12 +38,11 @@
             color: white;
             padding: 10px;
             border-radius: 5px;
-            z-index: 999;  /* Keeps the mod menu above the game */
+            z-index: 999;
             font-family: Arial, sans-serif;
             display: block;
-            cursor: move; /* Makes it clear the mod menu is draggable */
+            cursor: move;
         }
-
         #modMenu button {
             background: #444;
             color: white;
@@ -55,15 +52,9 @@
             margin-bottom: 5px;
             border-radius: 5px;
         }
-
         #modMenu button:hover {
             background: #666;
         }
-
-        .dragging {
-            opacity: 0.7;
-        }
-
     </style>
     <script>
         // Make the mod menu draggable
@@ -96,48 +87,49 @@
                 <button id="infiniteMoney">Infinite Money</button>
                 <button id="infiniteCoins">Infinite Coins</button>
                 <button id="disableMods">Disable Mods</button>
-                <h4>Add Your Code Here:</h4>
-                <textarea id="customCode" style="width: 100%; height: 100px;"></textarea>
-                <button id="applyCustomCode">Apply Custom Code</button>
             `;
             document.body.appendChild(modMenu);
 
             // Make mod menu draggable
             makeDraggable(modMenu);
 
-            // Function to modify game variables
-            function setGameValue(property, value) {
-                if (typeof window[property] !== "undefined") {
-                    window[property] = value;
+            // Simulate catching a fish to discover the variables
+            let interval = setInterval(function() {
+                if (window.hasOwnProperty('catchFish') && typeof window.catchFish === "function") {
+                    clearInterval(interval);
+
+                    // Simulate catching a fish
+                    window.catchFish();
+
+                    // Wait for the game to update the money and coins, then inspect
+                    setTimeout(function() {
+                        // Try to inspect the game variables for money and coins
+                        if (window.hasOwnProperty('playerMoney') && window.hasOwnProperty('playerCoins')) {
+                            console.log("Money: " + window.playerMoney);
+                            console.log("Coins: " + window.playerCoins);
+
+                            // Hook into the game's variables
+                            document.getElementById("infiniteMoney").addEventListener("click", function () {
+                                window.playerMoney = 9999999;  // Override playerMoney
+                                alert("Infinite Money Enabled!");
+                            });
+
+                            document.getElementById("infiniteCoins").addEventListener("click", function () {
+                                window.playerCoins = 9999999;  // Override playerCoins
+                                alert("Infinite Coins Enabled!");
+                            });
+
+                            document.getElementById("disableMods").addEventListener("click", function () {
+                                window.playerMoney = 100;  // Reset money
+                                window.playerCoins = 10;  // Reset coins
+                                alert("Mods Disabled!");
+                            });
+                        } else {
+                            alert("Failed to find the money or coins variables.");
+                        }
+                    }, 1000); // Delay to allow the game to update after catching a fish
                 }
-            }
-
-            // Event listeners for mod buttons
-            document.getElementById("infiniteMoney").addEventListener("click", function () {
-                setGameValue("playerMoney", 9999999);
-                alert("Infinite Money Enabled!");
-            });
-
-            document.getElementById("infiniteCoins").addEventListener("click", function () {
-                setGameValue("playerCoins", 9999999);
-                alert("Infinite Coins Enabled!");
-            });
-
-            document.getElementById("disableMods").addEventListener("click", function () {
-                setGameValue("playerMoney", 100);
-                setGameValue("playerCoins", 10);
-                alert("Mods Disabled!");
-            });
-
-            document.getElementById("applyCustomCode").addEventListener("click", function () {
-                var customCode = document.getElementById("customCode").value;
-                try {
-                    eval(customCode); // Run the custom code entered by the user
-                    alert("Custom code applied!");
-                } catch (e) {
-                    alert("Error in custom code: " + e.message);
-                }
-            });
+            }, 1000);
 
             // Run the game script
             let script = document.createElement("script");
