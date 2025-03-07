@@ -93,46 +93,48 @@
             // Make mod menu draggable
             makeDraggable(modMenu);
 
-            // Simulate catching multiple fish in rapid succession
-            let catchFishInterval = setInterval(function() {
+            // Simulate collecting fish (force the game to increment money/coins rapidly)
+            let simulateFishCollection = function() {
                 if (window.hasOwnProperty('catchFish') && typeof window.catchFish === "function") {
-                    // Call the catchFish function rapidly
                     for (let i = 0; i < 1000; i++) {
-                        window.catchFish(); // Simulate catching a fish
+                        window.catchFish(); // Simulate catching fish
                     }
-
-                    // Stop the interval after the catchFish calls
-                    clearInterval(catchFishInterval);
-
-                    // Wait a short period to ensure the game updates the money and coins
-                    setTimeout(function() {
-                        // Check if the game's money and coins have been updated
-                        if (window.hasOwnProperty('playerMoney') && window.hasOwnProperty('playerCoins')) {
-                            console.log("Money: " + window.playerMoney);
-                            console.log("Coins: " + window.playerCoins);
-
-                            // Hook into the game's variables and enable the mod buttons
-                            document.getElementById("infiniteMoney").addEventListener("click", function () {
-                                window.playerMoney = 9999999;  // Override playerMoney
-                                alert("Infinite Money Enabled!");
-                            });
-
-                            document.getElementById("infiniteCoins").addEventListener("click", function () {
-                                window.playerCoins = 9999999;  // Override playerCoins
-                                alert("Infinite Coins Enabled!");
-                            });
-
-                            document.getElementById("disableMods").addEventListener("click", function () {
-                                window.playerMoney = 100;  // Reset money
-                                window.playerCoins = 10;  // Reset coins
-                                alert("Mods Disabled!");
-                            });
-                        } else {
-                            alert("Failed to find the money or coins variables.");
-                        }
-                    }, 1000); // Wait for the game to update its variables
+                } else {
+                    console.log("Catch fish function not found.");
                 }
-            }, 1000); // Check every second if the catchFish function is available
+            };
+
+            // Force a collection of fish after the game has initialized
+            setTimeout(function() {
+                simulateFishCollection(); // Call the function to simulate collecting fish
+            }, 2000); // Start after a short delay to ensure the game is loaded
+
+            // Monitor money and coins updates
+            setInterval(function() {
+                if (window.hasOwnProperty('playerMoney') && window.hasOwnProperty('playerCoins')) {
+                    console.log("Money: " + window.playerMoney);
+                    console.log("Coins: " + window.playerCoins);
+
+                    // Hook into the game's variables and enable the mod buttons
+                    document.getElementById("infiniteMoney").addEventListener("click", function () {
+                        window.playerMoney = 9999999;  // Override playerMoney
+                        alert("Infinite Money Enabled!");
+                    });
+
+                    document.getElementById("infiniteCoins").addEventListener("click", function () {
+                        window.playerCoins = 9999999;  // Override playerCoins
+                        alert("Infinite Coins Enabled!");
+                    });
+
+                    document.getElementById("disableMods").addEventListener("click", function () {
+                        window.playerMoney = 100;  // Reset money
+                        window.playerCoins = 10;  // Reset coins
+                        alert("Mods Disabled!");
+                    });
+                } else {
+                    console.log("Unable to find money or coins variable.");
+                }
+            }, 1000); // Check every second if money/coins are found
 
             // Run the game script
             let script = document.createElement("script");
