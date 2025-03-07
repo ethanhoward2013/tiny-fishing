@@ -317,7 +317,60 @@
           GameMaker_Init();
        if(!window.AudioContext && !window.webkitAudioContext) g_WebAudioContext = null;
 
-        </script>
+        </script> <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Create mod menu
+        let modMenu = document.createElement("div");
+        modMenu.style.position = "fixed";
+        modMenu.style.top = "10px";
+        modMenu.style.right = "10px";
+        modMenu.style.background = "rgba(0, 0, 0, 0.8)";
+        modMenu.style.color = "white";
+        modMenu.style.padding = "10px";
+        modMenu.style.borderRadius = "5px";
+        modMenu.style.zIndex = "1000";
+        modMenu.style.fontFamily = "Arial, sans-serif";
+        modMenu.innerHTML = `
+            <h3 style="margin: 0 0 10px; text-align: center;">Mod Menu</h3>
+            <button id="infiniteMoney" style="display: block; width: 100%; margin-bottom: 5px;">Infinite Money</button>
+            <button id="infiniteCoins" style="display: block; width: 100%; margin-bottom: 5px;">Infinite Coins</button>
+            <button id="disableMods" style="display: block; width: 100%;">Disable Mods</button>
+        `;
+        document.body.appendChild(modMenu);
+
+        // Function to modify game variables
+        function setGameValue(property, value) {
+            if (typeof window[property] !== "undefined") {
+                window[property] = value;
+            }
+        }
+
+        // Event listeners for mod buttons
+        document.getElementById("infiniteMoney").addEventListener("click", function () {
+            setGameValue("playerMoney", 9999999);
+            alert("Infinite Money Enabled!");
+        });
+
+        document.getElementById("infiniteCoins").addEventListener("click", function () {
+            setGameValue("playerCoins", 9999999);
+            alert("Infinite Coins Enabled!");
+        });
+
+        document.getElementById("disableMods").addEventListener("click", function () {
+            setGameValue("playerMoney", 100);
+            setGameValue("playerCoins", 10);
+            alert("Mods Disabled!");
+        });
+
+        // Run the game script
+        let script = document.createElement("script");
+        script.src = "html5game/TinyFishing.js";
+        document.body.appendChild(script);
+    });
+</script>
+</body>
+</html>
+
 
 
     </body></html>
