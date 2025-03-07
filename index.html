@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>Tiny Fishing Modded</title>
     <style>
-        /* Styling for the mod menu */
+        /* Mod menu styling */
         #modMenu {
             position: fixed;
             top: 10px;
@@ -23,9 +23,14 @@
             margin: 5px 0;
             width: 100%;
         }
+
+        body {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
+
     <div id="modMenu">
         <h3>Mod Menu</h3>
         <button id="infiniteMoney">Infinite Money</button>
@@ -36,40 +41,34 @@
 
     <canvas id="canvas" width="640" height="360"></canvas>
 
-    <script type="text/javascript">
-        // This is a simple mockup of how Tiny Fishing modding could work.
-        // You will need to adapt these based on the actual game variables and functions
-
-        // Mockup for the game's global player variables
+    <script>
+        // Mockup for the game variables
         let playerMoney = 100;
         let playerCoins = 50;
         let fishCaught = 0;
 
         // Function to simulate collecting a fish
         function autoCollectFish() {
-            // Simulate the player catching a fish
             fishCaught++;
-            console.log("Fish caught: " + fishCaught);
-            // For the purposes of this, we'll increment coins and money as well
             playerMoney += 10;
             playerCoins += 5;
             updateUI();
         }
 
-        // Function to update UI values based on mods
+        // Function to update the game UI (debugging purposes)
         function updateUI() {
             console.log(`Money: ${playerMoney}, Coins: ${playerCoins}, Fish Caught: ${fishCaught}`);
         }
 
         // Mod menu functionality
         document.getElementById('infiniteMoney').addEventListener('click', () => {
-            playerMoney = 9999999; // Set infinite money
+            playerMoney = 9999999; // Infinite money
             alert("Infinite Money Activated!");
             updateUI();
         });
 
         document.getElementById('infiniteCoins').addEventListener('click', () => {
-            playerCoins = 9999999; // Set infinite coins
+            playerCoins = 9999999; // Infinite coins
             alert("Infinite Coins Activated!");
             updateUI();
         });
@@ -81,7 +80,7 @@
         });
 
         document.getElementById('disableMods').addEventListener('click', () => {
-            // Disable all mods and reset the values
+            // Reset values and disable all mods
             playerMoney = 100;
             playerCoins = 50;
             fishCaught = 0;
@@ -89,5 +88,6 @@
             updateUI();
         });
     </script>
+
 </body>
 </html>
